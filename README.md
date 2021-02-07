@@ -1,33 +1,42 @@
 # vue-drag-resize-rotate
-It's complicate to publish this component to npm, so just copy it to your own project and use it
 
 based on kirillmurashov vue-drag-resize, makes a extension  "rotate"
 
 #### the Origin: https://github.com/kirillmurashov/vue-drag-resize
 
-added rotate Function to it, the icon is using element-ui's.
-
-the original repository's dependencies are too old ,which makes me cannot write a proper pull request,
-
-so I decided to create a new repository
-
 the added function is marked with  "added"
+
+## Install and basic usage
+
+```bash
+$ npm install @pinkcao/vue-drag-resize-rotate
+```
+
+Register the component:
+
+```js
+import Vue from 'vue'
+import vueDragResizeRotate from '@pinkcao/vue-drag-resize-rotate'
+
+Vue.use(vueDragResizeRotate)
+```
 
 Use the component:
 
 ```vue
 <template>
     <div id="app">
-        <VueDragResizeRotate :isActive="true" :w="200" :h="200" :deg="deg" :rotate="rotatable" v-on:resizing="resize" v-on:dragging="resize" v-on:rotate="rotate">
+        <vue-drag-resize-rotate :isActive="true" :w="200" :h="200" :deg="deg" :isRotatable="rotatable" v-on:resizing="resize" v-on:dragging="resize" v-on:rotating="rotate">
             <h3>Hello World!</h3>
             <p>{{ top }} х {{ left }} </p>
             <p>{{ width }} х {{ height }}</p>
-        </VueDragResizeRotate>
+            <p>{{ deg }}</p>
+        </vue-drag-resize-rotate>
     </div>
 </template>
 
 <script>
-    import VueDragResizeRotate from 'vue-drag-resize-rotate';
+    import VueDragResizeRotate from '@pinkcao/vue-drag-resize-rotate';
 
     export default {
         name: 'app',
