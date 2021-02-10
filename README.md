@@ -6,6 +6,9 @@ based on kirillmurashov vue-drag-resize, makes a extension  "rotate"
 
 the added function is marked with  "added"
 
+## Demo
+https://pinkcao.github.io/vue-drag-resize-rotate/index.html
+
 ## Install and basic usage
 
 ```bash
