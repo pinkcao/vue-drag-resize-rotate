@@ -17,7 +17,17 @@
       :isRotatable="rotatable"
       @rotating="testconsole"
     >
-      <div style="background-color: #555555; width: 100%; height: 100%"></div>
+      <div style="background-color: #555555; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column">
+        <div>
+          <span style="color: white">口舌拙劣,</span>
+        </div>
+        <div>
+          <span style="color: white">新年快乐</span>
+        </div>
+        <div>
+          <span style="color: white">wish this junk can make the world more efficient</span>
+        </div>
+      </div>
     </vue-drag-resize-rotate>
   </div>
 </template>
@@ -38,8 +48,8 @@ export default {
       ifshow: true,
       width: 200,
       height: 200,
-      top: 0,
-      left: 0,
+      top: 100,
+      left: 100,
       parentLimitation: false,
       draggable: true,
       resizable: true,

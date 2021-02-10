@@ -1,13 +1,12 @@
 # vue-drag-resize-rotate
 
-based on kirillmurashov vue-drag-resize, makes a extension  "rotate"
+based on kirillmurashov vue-drag-resize, extended "rotate"
 
 #### the Origin: https://github.com/kirillmurashov/vue-drag-resize
 
-the added function is marked with  "added"
-
 ## Demo
-https://pinkcao.github.io/vue-drag-resize-rotate/index.html
+[Demo](https://pinkcao.github.io/vue-drag-resize-rotate/index.html)
+
 
 ## Install and basic usage
 
