@@ -1,7 +1,7 @@
 {
   "name": "@pinkcao/vue-drag-resize-rotate",
   "description": "A Vue component, a customizable container of other components",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "pinkcao <972558143@qq.com>",
   "license": "MIT",
   "private": false,
@@ -11,7 +11,8 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
-    "vue": "^2.5.11"
+    "vue": "^2.5.11",
+    "element-ui": "^2.13.2"
   },
   "browserslist": [
     "> 1%",

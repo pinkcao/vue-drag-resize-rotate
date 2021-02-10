@@ -1,30 +1,92 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+  <div id="app" style="width: 100vw; height: 100vh">
+    <vue-drag-resize-rotate
+      :isActive="active"
+      :preventActiveBehavior="preventActiveBehavior"
+      :w="width"
+      :h="height"
+      :x="left"
+      :y="top"
+      :z="zindex"
+      :deg="style.deg"
+      @resizing="resize"
+      @dragging="resize"
+      :parentLimitation="parentLimitation"
+      :isDraggable="draggable"
+      :isResizable="resizable"
+      :isRotatable="rotatable"
+      @rotating="testconsole"
+    >
+      <div style="background-color: #555555; width: 100%; height: 100%"></div>
+    </vue-drag-resize-rotate>
   </div>
 </template>
 
 <script>
+import vueDragResizeRotate from './lib/vueDragResizeRotate.vue';
+
 export default {
+  components: {vueDragResizeRotate},
   name: 'app',
-  data () {
+  data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      // colorSet: [],
+      // imgurl: require('@/assets/图表组件.png')
+      preventActiveBehavior: false,
+      name: 'compA',
+      active: false,
+      ifshow: true,
+      width: 200,
+      height: 200,
+      top: 0,
+      left: 0,
+      parentLimitation: false,
+      draggable: true,
+      resizable: true,
+      rotatable: true,
+      index: 0,
+      zindex: 0,
+      mode: 'design',
+      flag: false,
+      title: '综合图表',
+      subTitle: 'fake data',
+      dataSource: {
+        data: [
+          ['department', '2018', '2019'],
+          ['finance', 43.3, 85.8],
+          ['humanResource', 83.1, 73.4],
+          ['sales', 86.4, 65.2],
+          ['product', 72.4, 53.9],
+          ['qualityAssurance', 55.1, 66.5]
+        ]
+      },
+      style: {
+        opacity: 1,
+        legendvis: true,
+        titlevis: true,
+        deg: 0
+      },
+      backgroundStyle: {
+        width: '100%',
+        height: '100%'
+      }
+    }
+  },
+  computed: {},
+  created() {
+  },
+  mounted() {
+  },
+
+  methods: {
+    resize(newRect) {
+      this.width = newRect.width
+      this.height = newRect.height
+      this.top = newRect.top
+      this.left = newRect.left
+    },
+    testconsole(deg) {
+      this.style.deg = deg
     }
   }
 }
@@ -38,23 +100,5 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
 }
 </style>
