@@ -25,6 +25,7 @@
       :style="currentHalfWidth"
       v-show="isRotatable && active"
       @mousedown.stop.prevent="activeRotate($event)"
+      @touchstart.stop.prevent="activeRotate($event)"
     ></span>
   </div>
 </template>
