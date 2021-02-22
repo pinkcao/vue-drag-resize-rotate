@@ -447,20 +447,12 @@ export default {
       console.log(this.rotateStart)
     },
     rotateMove(event){
-        console.log('test')
-        // console.log(listener)
         var el = this.$refs.current
-        // console.log(event.clientX || event.touches[0].pageX)
-        // console.log(event.clientY || event.touches[0].pageY)
         let a = this.calculLength(this.rotateStart[0], event.clientX || event.touches[0].pageX, this.rotateStart[1], event.clientY || event.touches[0].pageY)
         let c = this.calculLength(this.rotateStart[0], this.rotateCenter[0], this.rotateStart[1], this.rotateCenter[1])
         let b = this.calculLength(this.rotateCenter[0], event.clientX || event.touches[0].pageX, this.rotateCenter[1], event.clientY || event.touches[0].pageY)
-        // let a = this.calculLength(this.rotateStart[0], event.clientX, this.rotateStart[1], event.clientY)
-        // let c = this.calculLength(this.rotateStart[0], this.rotateCenter[0], this.rotateStart[1], this.rotateCenter[1])
-        // let b = this.calculLength(this.rotateCenter[0], event.clientX, this.rotateCenter[1], event.clientY)
         // eslint-disable-next-line prettier/prettier
         let direct = this.calculClock(this.rotateCenter[0], this.rotateCenter[1], this.rotateStart[0], this.rotateStart[1], event.clientX || event.touches[0].pageX, event.clientY || event.touches[0].pageY) >= 0
-        // console.log(direct)
         let rawDeg = this.calculrawDegA(a, b, c)
         rawDeg = Math.abs(rawDeg)
         //判断转向 顺时针or 逆时针
@@ -471,14 +463,14 @@ export default {
         srawDeg += rawDeg
         Math.abs(srawDeg) > 360 ? (srawDeg %= 360) : true
         this.rawDeg = srawDeg
-        // this.rotateStart[0] = event.clientX
-        // this.rotateStart[1] = event.clientY
         this.rotateStart[0] = event.clientX || event.touches[0].pageX
         this.rotateStart[1] = event.clientY || event.touches[0].pageY
-        // console.log(this.rotateStart)
+        this.$emit('rotating', this.rawDeg)
     },
     rotateUp(){
       this.rotateDrag = false
+      this.$emit('rotating', this.rawDeg)
+      this.$emit('rotatestop', this.rawDeg)
     },
     stickDown: function(stick, ev) {
       if (!this.isResizable || !this.active) {
@@ -761,9 +753,6 @@ export default {
     }
   },
   watch: {
-    rawDeg() {
-      this.$emit('rotating', this.rawDeg)
-    },
     rawLeft(newLeft) {
       const limits = this.limits
       const stickAxis = this.stickAxis
