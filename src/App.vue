@@ -18,15 +18,6 @@
       @rotating="testconsole"
     >
       <div style="background-color: #555555; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column">
-        <div>
-          <span style="color: white">口舌拙劣,</span>
-        </div>
-        <div>
-          <span style="color: white">新年快乐</span>
-        </div>
-        <div>
-          <span style="color: white">wish this junk can make the world more efficient</span>
-        </div>
       </div>
     </vue-drag-resize-rotate>
   </div>
