@@ -24,8 +24,8 @@
       class="iconfont icon-rotate"
       :style="currentHalfWidth"
       v-show="isRotatable && active"
-      @mousedown.stop.prevent="activeRotate($event)"
-      @touchstart.stop.prevent="activeRotate($event)"
+      @mousedown.stop.prevent="rotateDown($event)"
+      @touchstart.stop.prevent="rotateDown($event)"
     ></span>
   </div>
 </template>
@@ -208,6 +208,7 @@ export default {
   created: function() {
     this.stickDrag = false
     this.bodyDrag = false
+    this.rotateDrag = false
     this.stickAxis = null
     this.stickStartPos = { mouseX: 0, mouseY: 0, x: 0, y: 0, w: 0, h: 0 }
     this.limits = {
@@ -270,14 +271,26 @@ export default {
     },
     activeRotate(e) {
       this.getCenter()
-      this.rotateStart = [e.clientX, e.clientY]
+      const rotateX = e.clientX || e.touches[0].pageX
+      const rotateY = e.clientY || e.touches[0].pageY
+      // this.rotateStart = [e.clientX, e.clientY]
+      this.rotateStart = [rotateX, rotateY]
+      console.log(this.rotateStart)
       const listener = event => {
+        console.log('?')
+        // console.log(listener)
         var el = this.$refs.current
-        let a = this.calculLength(this.rotateStart[0], event.clientX, this.rotateStart[1], event.clientY)
+        // console.log(event.clientX || event.touches[0].pageX)
+        // console.log(event.clientY || event.touches[0].pageY)
+        let a = this.calculLength(this.rotateStart[0], event.clientX || event.touches[0].pageX, this.rotateStart[1], event.clientY || event.touches[0].pageY)
         let c = this.calculLength(this.rotateStart[0], this.rotateCenter[0], this.rotateStart[1], this.rotateCenter[1])
-        let b = this.calculLength(this.rotateCenter[0], event.clientX, this.rotateCenter[1], event.clientY)
+        let b = this.calculLength(this.rotateCenter[0], event.clientX || event.touches[0].pageX, this.rotateCenter[1], event.clientY || event.touches[0].pageY)
+        // let a = this.calculLength(this.rotateStart[0], event.clientX, this.rotateStart[1], event.clientY)
+        // let c = this.calculLength(this.rotateStart[0], this.rotateCenter[0], this.rotateStart[1], this.rotateCenter[1])
+        // let b = this.calculLength(this.rotateCenter[0], event.clientX, this.rotateCenter[1], event.clientY)
         // eslint-disable-next-line prettier/prettier
-        let direct = this.calculClock(this.rotateCenter[0], this.rotateCenter[1], this.rotateStart[0], this.rotateStart[1], event.clientX, event.clientY) >= 0
+        let direct = this.calculClock(this.rotateCenter[0], this.rotateCenter[1], this.rotateStart[0], this.rotateStart[1], event.clientX || event.touches[0].pageX, event.clientY || event.touches[0].pageY) >= 0
+        // console.log(direct)
         let rawDeg = this.calculrawDegA(a, b, c)
         rawDeg = Math.abs(rawDeg)
         //判断转向 顺时针or 逆时针
@@ -288,12 +301,22 @@ export default {
         srawDeg += rawDeg
         Math.abs(srawDeg) > 360 ? (srawDeg %= 360) : true
         this.rawDeg = srawDeg
-        this.rotateStart[0] = event.clientX
-        this.rotateStart[1] = event.clientY
+        // this.rotateStart[0] = event.clientX
+        // this.rotateStart[1] = event.clientY
+        this.rotateStart[0] = event.clientX || event.touches[0].pageX
+        this.rotateStart[1] = event.clientY || event.touches[0].pageY
+        // console.log(this.rotateStart)
       }
-      document.body.addEventListener('mousemove', listener)
-      document.body.addEventListener('mouseup', () => {
-        document.body.removeEventListener('mousemove', listener)
+      document.documentElement.addEventListener('touchmove', listener, true)
+      document.documentElement.addEventListener('touchend touchcancel', () => {
+        console.log('touchend')
+        document.documentElement.removeEventListener('touchmove', listener, true)
+      })
+      // document.body.addEventListener('touchend touchcancel', listener, true)
+      // document.documentElement.addEventListener('touchstart', listener)
+      document.documentElement.addEventListener('mousemove', listener)
+      document.documentElement.addEventListener('mouseup', () => {
+        document.documentElement.removeEventListener('mousemove', listener)
       })
     },
     clickSon(e) {
@@ -314,7 +337,7 @@ export default {
       this.active = false
     },
     move(ev) {
-      if (!this.stickDrag && !this.bodyDrag) {
+      if (!this.stickDrag && !this.bodyDrag && !this.rotateDrag) {
         return
       }
       ev.stopPropagation()
@@ -324,6 +347,9 @@ export default {
       if (this.bodyDrag) {
         this.bodyMove(ev)
       }
+      if (this.rotateDrag) {
+        this.rotateMove(ev)
+      }
     },
     up(ev) {
       if (this.stickDrag) {
@@ -331,6 +357,9 @@ export default {
       }
       if (this.bodyDrag) {
         this.bodyUp(ev)
+      }
+      if (this.rotateDrag) {
+        this.rotateUp(ev)
       }
     },
     bodyDown: function(ev) {
@@ -407,6 +436,41 @@ export default {
         minBottom: null,
         maxBottom: null
       }
+    },
+    rotateDown: function(ev){
+      if (!this.isRotatable || !this.active) {
+        return
+      }
+      this.getCenter()
+      this.rotateDrag = true
+      this.rotateStart = [ev.clientX || ev.touches[0].pageX, ev.clientY || ev.touches[0].pageY]
+      console.log(this.rotateStart)
+    },
+    rotateMove(event){
+        var el = this.$refs.current
+        let a = this.calculLength(this.rotateStart[0], event.clientX || event.touches[0].pageX, this.rotateStart[1], event.clientY || event.touches[0].pageY)
+        let c = this.calculLength(this.rotateStart[0], this.rotateCenter[0], this.rotateStart[1], this.rotateCenter[1])
+        let b = this.calculLength(this.rotateCenter[0], event.clientX || event.touches[0].pageX, this.rotateCenter[1], event.clientY || event.touches[0].pageY)
+        // eslint-disable-next-line prettier/prettier
+        let direct = this.calculClock(this.rotateCenter[0], this.rotateCenter[1], this.rotateStart[0], this.rotateStart[1], event.clientX || event.touches[0].pageX, event.clientY || event.touches[0].pageY) >= 0
+        let rawDeg = this.calculrawDegA(a, b, c)
+        rawDeg = Math.abs(rawDeg)
+        //判断转向 顺时针or 逆时针
+        if (!direct) {
+          rawDeg = 0 - rawDeg
+        }
+        var srawDeg = this.rawDeg
+        srawDeg += rawDeg
+        Math.abs(srawDeg) > 360 ? (srawDeg %= 360) : true
+        this.rawDeg = srawDeg
+        this.rotateStart[0] = event.clientX || event.touches[0].pageX
+        this.rotateStart[1] = event.clientY || event.touches[0].pageY
+        this.$emit('rotating', this.rawDeg)
+    },
+    rotateUp(){
+      this.rotateDrag = false
+      this.$emit('rotating', this.rawDeg)
+      this.$emit('rotatestop', this.rawDeg)
     },
     stickDown: function(stick, ev) {
       if (!this.isResizable || !this.active) {
@@ -689,9 +753,6 @@ export default {
     }
   },
   watch: {
-    rawDeg() {
-      this.$emit('rotating', this.rawDeg)
-    },
     rawLeft(newLeft) {
       const limits = this.limits
       const stickAxis = this.stickAxis
