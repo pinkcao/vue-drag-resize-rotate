@@ -269,56 +269,6 @@ export default {
         el.getBoundingClientRect().top + el.getBoundingClientRect().height / 2
       ]
     },
-    activeRotate(e) {
-      this.getCenter()
-      const rotateX = e.clientX || e.touches[0].pageX
-      const rotateY = e.clientY || e.touches[0].pageY
-      // this.rotateStart = [e.clientX, e.clientY]
-      this.rotateStart = [rotateX, rotateY]
-      console.log(this.rotateStart)
-      const listener = event => {
-        console.log('?')
-        // console.log(listener)
-        var el = this.$refs.current
-        // console.log(event.clientX || event.touches[0].pageX)
-        // console.log(event.clientY || event.touches[0].pageY)
-        let a = this.calculLength(this.rotateStart[0], event.clientX || event.touches[0].pageX, this.rotateStart[1], event.clientY || event.touches[0].pageY)
-        let c = this.calculLength(this.rotateStart[0], this.rotateCenter[0], this.rotateStart[1], this.rotateCenter[1])
-        let b = this.calculLength(this.rotateCenter[0], event.clientX || event.touches[0].pageX, this.rotateCenter[1], event.clientY || event.touches[0].pageY)
-        // let a = this.calculLength(this.rotateStart[0], event.clientX, this.rotateStart[1], event.clientY)
-        // let c = this.calculLength(this.rotateStart[0], this.rotateCenter[0], this.rotateStart[1], this.rotateCenter[1])
-        // let b = this.calculLength(this.rotateCenter[0], event.clientX, this.rotateCenter[1], event.clientY)
-        // eslint-disable-next-line prettier/prettier
-        let direct = this.calculClock(this.rotateCenter[0], this.rotateCenter[1], this.rotateStart[0], this.rotateStart[1], event.clientX || event.touches[0].pageX, event.clientY || event.touches[0].pageY) >= 0
-        // console.log(direct)
-        let rawDeg = this.calculrawDegA(a, b, c)
-        rawDeg = Math.abs(rawDeg)
-        //判断转向 顺时针or 逆时针
-        if (!direct) {
-          rawDeg = 0 - rawDeg
-        }
-        var srawDeg = this.rawDeg
-        srawDeg += rawDeg
-        Math.abs(srawDeg) > 360 ? (srawDeg %= 360) : true
-        this.rawDeg = srawDeg
-        // this.rotateStart[0] = event.clientX
-        // this.rotateStart[1] = event.clientY
-        this.rotateStart[0] = event.clientX || event.touches[0].pageX
-        this.rotateStart[1] = event.clientY || event.touches[0].pageY
-        // console.log(this.rotateStart)
-      }
-      document.documentElement.addEventListener('touchmove', listener, true)
-      document.documentElement.addEventListener('touchend touchcancel', () => {
-        console.log('touchend')
-        document.documentElement.removeEventListener('touchmove', listener, true)
-      })
-      // document.body.addEventListener('touchend touchcancel', listener, true)
-      // document.documentElement.addEventListener('touchstart', listener)
-      document.documentElement.addEventListener('mousemove', listener)
-      document.documentElement.addEventListener('mouseup', () => {
-        document.documentElement.removeEventListener('mousemove', listener)
-      })
-    },
     clickSon(e) {
       e.target.focus()
       e.stopPropagation()
