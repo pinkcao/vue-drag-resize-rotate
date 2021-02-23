@@ -4,6 +4,8 @@ based on kirillmurashov vue-drag-resize, extended "rotate"
 
 #### the Origin: https://github.com/kirillmurashov/vue-drag-resize
 
+### rotate function is not supported on the mobile devices, may will be updated in Spring Festival
+
 ## Demo
 [Demo](https://pinkcao.github.io/vue-drag-resize-rotate/index.html)
 
