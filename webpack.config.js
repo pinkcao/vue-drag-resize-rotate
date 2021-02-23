@@ -4,16 +4,16 @@ const NODE_ENV = process.env.NODE_ENV
 console.log(NODE_ENV)
 
 module.exports = {
-  // entry: NODE_ENV == 'development' ? './src/main.js' : './src/index.js',
-  entry: './src/main.js',
+  entry: NODE_ENV == 'development' ? './src/main.js' : './src/index.js',
+  // entry: './src/main.js',
   output: {
     // path: path.resolve(__dirname, './dist'),
     // publicPath: '/dist/',
     // filename: 'vue-drag-resize-rotate.js',
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-    // filename: NODE_ENV == 'development' ? 'build.js' : 'vue-drag-resize-rotate.js',
-    filename: 'build.js',
+    filename: NODE_ENV == 'development' ? 'build.js' : 'vue-drag-resize-rotate.js',
+    // filename: 'build.js',
     libraryTarget:'umd',
     umdNamedDefine:true
   },
