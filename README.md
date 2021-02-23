@@ -4,8 +4,6 @@ based on kirillmurashov vue-drag-resize, extended "rotate"
 
 #### the Origin: https://github.com/kirillmurashov/vue-drag-resize
 
-### rotate function is not supported on the mobile devices, may will be updated in Spring Festival
-
 ## Demo
 [Demo](https://pinkcao.github.io/vue-drag-resize-rotate/index.html)
 
@@ -76,32 +74,6 @@ Use the component:
 ```
 
 
-
-### Props added
-
-#### isRotatable
-Type: `Boolean`<br>
-Required: `false`<br>
-Default: `true`
-
-Determines whether the component can be rotated
-确定组件是否可以旋转。
-
-```html
-<vue-drag-resize-rotate :isRotatable="true">
-```
-
-
-#### deg
-Type: `Number`<br>
-Required: `false`<br>
-
-Determines the rotate degree of the component
-当前组件旋转的角度
-
-```html
-<vue-drag-resize-rotate :deg="120">
-```
 
 ### Props
 
@@ -212,6 +184,19 @@ Determines whether the component should resize.
 ```html
 <vue-drag-resize-rotate :isResizable="false">
 ```
+
+#### isRotatable
+Type: `Boolean`<br>
+Required: `false`<br>
+Default: `true`
+
+Determines whether the component can be rotated
+确定组件是否可以旋转。
+
+```html
+<vue-drag-resize-rotate :isRotatable="true">
+```
+
 #### parentLimitation
 Type: `Boolean`<br>
 Required: `false`<br>
@@ -259,6 +244,17 @@ Default: `200`
 Define the initial height of the component.
 定义组件的初始高度。
 
+
+#### deg
+Type: `Number`<br>
+Required: `false`<br>
+
+Determines the rotate degree of the component
+当前组件旋转的角度
+
+```html
+<vue-drag-resize-rotate :deg="120">
+```
 
 
 ```html
@@ -408,21 +404,6 @@ Defines a class that is applied on the div with the class vdr
 
 ---
 
-
-### Events added
-
-#### rotating
-
-Required: `false`<br>
-Parameters: `-`
-
-Called whenever the rotate handler gets clicked and the cursor moving.
-单击旋转握柄且旋转时调用。
-
-```html
-<vue-drag-resize-rotate @rotating="rotate">
-```
-
 ### Events
 
 #### clicked
@@ -539,11 +520,34 @@ Parameters: `object`
 }
 ```
 
-
 Called whenever the component stops getting dragged.
 每当组件停止拖动时调用。
 
 
 ```html
 <vue-drag-resize-rotate @dragstop="onDragstop">
+```
+
+#### rotating
+
+Required: `false`<br>
+Parameters: `-`
+
+Called whenever the rotate handler gets clicked and the cursor moving.
+单击旋转握柄且旋转时调用。
+
+```html
+<vue-drag-resize-rotate @rotating="rotate">
+```
+
+#### rotatestop
+
+Required: `false`<br>
+Parameters: `-`
+
+Called whenever the component stops getting resized.
+当组件停止旋转时调用。
+
+```html
+<vue-drag-resize-rotate @rotatestop="rotatestop">
 ```

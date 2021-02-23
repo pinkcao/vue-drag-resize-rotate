@@ -394,7 +394,6 @@ export default {
       this.getCenter()
       this.rotateDrag = true
       this.rotateStart = [ev.clientX || ev.touches[0].pageX, ev.clientY || ev.touches[0].pageY]
-      console.log(this.rotateStart)
     },
     rotateMove(event){
         var el = this.$refs.current
@@ -455,8 +454,6 @@ export default {
           this.$refs.current.style.transformOrigin = 'right center'
           break
       }
-      // eslint-disable-next-line prettier/prettier
-      console.log(this.currentFixArray[0] - this.$refs.bl[0].getBoundingClientRect().x, this.currentFixArray[1] - this.$refs.bl[0].getBoundingClientRect().y)
       // eslint-disable-next-line prettier/prettier
       let testArr = [this.currentFixArray[0] - this.$refs.bl[0].getBoundingClientRect().x, this.currentFixArray[1] - this.$refs.bl[0].getBoundingClientRect().y]
       this.left = this.left + testArr[0] / this.parentScaleX
@@ -545,7 +542,6 @@ export default {
           }
         }
       }
-      console.log(limits)
       return limits
     },
     stickMove(ev) {
