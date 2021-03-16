@@ -180,7 +180,7 @@ export default {
   },
   data: function() {
     return {
-      rawDeg: 0,
+      rawDeg: this.deg,
       rotateCenter: [],
       rotateEnd: [],
       rotateStart: [],
