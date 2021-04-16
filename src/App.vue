@@ -8,7 +8,7 @@
       :x="left"
       :y="top"
       :z="zindex"
-      :deg="style.deg"
+      :deg="deg"
       @resizing="resize"
       @dragging="resize"
       :parentLimitation="parentLimitation"
@@ -16,6 +16,11 @@
       :isResizable="resizable"
       :isRotatable="rotatable"
       @rotating="testconsole"
+      :snapToGrid="snapToGrid"
+      :gridX="10"
+      :gridY="50"
+      :aspectRatio="snapToGrid"
+      :aspectRatioSticks="aspectRatioSticks"
     >
       <div style="background-color: #555555; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column">
       </div>
@@ -31,8 +36,6 @@ export default {
   name: 'app',
   data() {
     return {
-      // colorSet: [],
-      // imgurl: require('@/assets/图表组件.png')
       preventActiveBehavior: false,
       name: 'compA',
       active: false,
@@ -42,6 +45,8 @@ export default {
       top: 100,
       left: 100,
       parentLimitation: false,
+      aspectRatio: true,
+      aspectRatioSticks: ['tl', 'tr', 'tm'],
       draggable: true,
       resizable: true,
       rotatable: true,
@@ -49,28 +54,10 @@ export default {
       zindex: 0,
       mode: 'design',
       flag: false,
-      title: '综合图表',
-      subTitle: 'fake data',
-      dataSource: {
-        data: [
-          ['department', '2018', '2019'],
-          ['finance', 43.3, 85.8],
-          ['humanResource', 83.1, 73.4],
-          ['sales', 86.4, 65.2],
-          ['product', 72.4, 53.9],
-          ['qualityAssurance', 55.1, 66.5]
-        ]
-      },
-      style: {
-        opacity: 1,
-        legendvis: true,
-        titlevis: true,
-        deg: 0
-      },
-      backgroundStyle: {
-        width: '100%',
-        height: '100%'
-      }
+      snapToGrid: true,
+      gridX: 10,
+      gridY: 50,
+      deg: 0,
     }
   },
   computed: {},
@@ -87,7 +74,7 @@ export default {
       this.left = newRect.left
     },
     testconsole(deg) {
-      this.style.deg = deg
+      this.deg = deg
     }
   }
 }

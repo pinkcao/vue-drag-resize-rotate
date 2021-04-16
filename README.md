@@ -223,6 +223,28 @@ Determines whether the component should retain its proportions.
 <vue-drag-resize-rotate :aspectRatio="false">
 ```
 
+#### aspectRatioSticks
+Type: `Array`<br>
+Required: `false`<br>
+Default: `['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml']`
+
+* `tl` - Top left
+* `tm` - Top middle
+* `tr` - Top right
+* `mr` - Middle right
+* `br` - Bottom right
+* `bm` - Bottom middle
+* `bl` - Bottom left
+* `ml` - Middle left
+
+Determines the sticks affected by aspectRatio
+确定受到保持纵横比影响的握柄。
+
+
+```html
+<vue-drag-resize-rotate :aspectRatioSticks="['tl', 'tm', 'tr']">
+```
+
 #### w
 Type: `Number`<br>
 Required: `false`<br>
@@ -357,6 +379,43 @@ Define the array of handles to restrict the element resizing:
 ```html
 <vue-drag-resize-rotate :sticks="['tm','bm','ml','mr']">
 ```
+
+#### snapToGrid
+Type: `Boolean`<br>
+Required: `false`<br>
+Default: `false`
+
+Determine whether the component should snap to grid.
+决定组件是否应该对齐至网格。
+
+```html
+<vue-drag-resize-rotate snapToGrid="true">
+```
+
+#### gridX
+Type: `Number`<br>
+Required: `false`<br>
+Default: `50`
+
+Define the grid on axisX.
+定义X轴上的网格大小。
+
+```html
+<vue-drag-resize-rotate gridX="20">
+```
+
+#### gridY
+Type: `Number`<br>
+Required: `false`<br>
+Default: `50`
+
+Define the grid on axisY.
+定义Y轴上的网格大小。
+
+```html
+<vue-drag-resize-rotate gridY="20">
+```
+
 
 #### axis
 Type: `String`<br>

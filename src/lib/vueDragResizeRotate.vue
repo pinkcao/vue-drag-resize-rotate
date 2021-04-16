@@ -169,11 +169,35 @@ export default {
         return ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml']
       }
     },
+    aspectRatioSticks: {
+      type: Array,
+      default: function() {
+        return ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml']
+      }
+    },
     axis: {
       type: String,
       default: 'both',
       validator: function(val) {
         return ['x', 'y', 'both', 'none'].indexOf(val) !== -1
+      }
+    },
+    snapToGrid: {
+      type: Boolean,
+      default: false
+    },
+    gridX: {
+      type: Number,
+      default: 50,
+      validator(val) {
+        return val > 0;
+      }
+    },
+    gridY: {
+      type: Number,
+      default: 50,
+      validator(val) {
+        return val > 0;
       }
     },
     type: {}
@@ -202,7 +226,8 @@ export default {
       minWidth: this.minw,
       minHeight: this.minh,
       currentFixArray: [],
-      currentFixSpot: []
+      currentFixSpot: [],
+      ratioStick: null
     }
   },
   created: function() {
@@ -369,6 +394,47 @@ export default {
       this.rawBottom = stickStartPos.bottom + delta.y
       this.rawLeft = stickStartPos.left - delta.x
       this.rawRight = stickStartPos.right + delta.x
+      if (this.snapToGrid) {
+        let alignTop = true;
+        let alignLeft = true;
+
+        let diffT = this.rawTop - Math.floor(this.rawTop / this.gridY) * this.gridY;
+        let diffB =
+          this.parentHeight -
+          this.rawBottom -
+          Math.floor((this.parentHeight - this.rawBottom) / this.gridY) * this.gridY;
+        let diffL = this.rawLeft - Math.floor(this.rawLeft / this.gridX) * this.gridX;
+        let diffR =
+          this.parentWidth -
+          this.rawRight -
+          Math.floor((this.parentWidth - this.rawRight) / this.gridX) * this.gridX;
+
+        if (diffT > this.gridY / 2) {
+          diffT -= this.gridY;
+        }
+        if (diffB > this.gridY / 2) {
+          diffB -= this.gridY;
+        }
+        if (diffL > this.gridX / 2) {
+          diffL -= this.gridX;
+        }
+        if (diffR > this.gridX / 2) {
+          diffR -= this.gridX;
+        }
+
+        if (Math.abs(diffB) < Math.abs(diffT)) {
+          alignTop = false;
+        }
+        if (Math.abs(diffR) < Math.abs(diffL)) {
+          alignLeft = false;
+        }
+
+        this.rawTop -= alignTop ? diffT : diffB;
+        this.rawBottom = this.parentHeight - this.height - this.rawTop;
+        this.rawLeft -= alignLeft ? diffL : diffR;
+        this.rawRight = this.parentWidth - this.width - this.rawLeft;
+      }
+
       this.$emit('dragging', this.rect)
     },
     bodyUp() {
@@ -400,11 +466,10 @@ export default {
         let a = this.calculLength(this.rotateStart[0], event.clientX || event.touches[0].pageX, this.rotateStart[1], event.clientY || event.touches[0].pageY)
         let c = this.calculLength(this.rotateStart[0], this.rotateCenter[0], this.rotateStart[1], this.rotateCenter[1])
         let b = this.calculLength(this.rotateCenter[0], event.clientX || event.touches[0].pageX, this.rotateCenter[1], event.clientY || event.touches[0].pageY)
-        // eslint-disable-next-line prettier/prettier
         let direct = this.calculClock(this.rotateCenter[0], this.rotateCenter[1], this.rotateStart[0], this.rotateStart[1], event.clientX || event.touches[0].pageX, event.clientY || event.touches[0].pageY) >= 0
         let rawDeg = this.calculrawDegA(a, b, c)
         rawDeg = Math.abs(rawDeg)
-        //判断转向 顺时针or 逆时针
+        //determine clockwise
         if (!direct) {
           rawDeg = 0 - rawDeg
         }
@@ -467,6 +532,7 @@ export default {
       this.stickStartPos.top = this.top
       this.stickStartPos.bottom = this.bottom
       this.currentStick = stick.split('')
+      this.ratioStick = stick
       this.stickAxis = null
       switch (this.currentStick[0]) {
         case 'b':
@@ -603,16 +669,16 @@ export default {
       this.right = this.right - testArr[0] / this.parentScaleX
       this.top = this.top + testArr[1] / this.parentScaleY
       this.bottom = this.bottom - testArr[1] / this.parentScaleY
-      this.rawTop = this.top
-      this.rawBottom = this.bottom
-      this.rawLeft = this.left
-      this.rawRight = this.right
+      // this.rawTop = this.top
+      // this.rawBottom = this.bottom
+      // this.rawLeft = this.left
+      // this.rawRight = this.right
       this.stickAxis = null
       this.$emit('resizing', this.rect)
       this.$emit('resizestop', this.rect)
     },
     aspectRatioCorrection() {
-      if (!this.aspectRatio) {
+      if (!this.aspectRatioStickFlag) {
         return
       }
       const bottom = this.bottom
@@ -655,11 +721,12 @@ export default {
   computed: {
     currentHalfWidth() {
       return {
-        'font-size': '40px',
+        'font-size': '30px',
         position: 'absolute',
         top: '-50px',
         cursor: 'pointer',
-        right: this.w / 2 - 20 + 'px',
+        left: '50%',
+        marginLeft: '-12px',
         color: '#888888'
       }
     },
@@ -696,10 +763,19 @@ export default {
         width: Math.round(this.width),
         height: Math.round(this.height)
       }
+    },
+    aspectRatioStickFlag() {
+      if (this.aspectRatioSticks.indexOf(this.ratioStick) >= 0 && this.aspectRatio) {
+        return true
+      }
+      return false
     }
   },
   watch: {
     rawLeft(newLeft) {
+      if (this.aspectRatioStickFlag == false) {
+        this.aspectFactor = this.width / this.height
+      }
       const limits = this.limits
       const stickAxis = this.stickAxis
       const aspectFactor = this.aspectFactor
@@ -712,7 +788,7 @@ export default {
       } else if (limits.maxLeft !== null && limits.maxLeft < newLeft) {
         newLeft = limits.maxLeft
       }
-      if (aspectRatio && stickAxis === 'x') {
+      if (this.aspectRatioStickFlag && stickAxis === 'x') {
         const delta = left - newLeft
         this.rawTop = top - delta / aspectFactor / 2
         this.rawBottom = bottom - delta / aspectFactor / 2
@@ -732,7 +808,7 @@ export default {
       } else if (limits.maxRight !== null && limits.maxRight < newRight) {
         newRight = limits.maxRight
       }
-      if (aspectRatio && stickAxis === 'x') {
+      if (this.aspectRatioStickFlag && stickAxis === 'x') {
         const delta = right - newRight
         this.rawTop = top - delta / aspectFactor / 2
         this.rawBottom = bottom - delta / aspectFactor / 2
@@ -740,6 +816,9 @@ export default {
       this.right = newRight
     },
     rawTop(newTop) {
+      if (this.aspectRatioStickFlag == false) {
+        this.aspectFactor = this.width / this.height
+      }
       const limits = this.limits
       const stickAxis = this.stickAxis
       const aspectFactor = this.aspectFactor
@@ -752,7 +831,7 @@ export default {
       } else if (limits.maxTop !== null && limits.maxTop < newTop) {
         newTop = limits.maxTop
       }
-      if (aspectRatio && stickAxis === 'y') {
+      if (this.aspectRatioStickFlag && stickAxis === 'y') {
         const delta = top - newTop
         this.rawLeft = left - (delta * aspectFactor) / 2
         this.rawRight = right - (delta * aspectFactor) / 2
@@ -772,7 +851,7 @@ export default {
       } else if (limits.maxBottom !== null && limits.maxBottom < newBottom) {
         newBottom = limits.maxBottom
       }
-      if (aspectRatio && stickAxis === 'y') {
+      if (this.aspectRatioStickFlag && stickAxis === 'y') {
         const delta = bottom - newBottom
         this.rawLeft = left - (delta * aspectFactor) / 2
         this.rawRight = right - (delta * aspectFactor) / 2
