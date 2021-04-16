@@ -237,8 +237,8 @@ Default: `['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml']`
 * `bl` - Bottom left
 * `ml` - Middle left
 
-Determines the sticks affected by aspectRatio
-确定受到保持纵横比影响的握柄。
+Determines the sticks affected by aspectRatio, only works when aspectRatio is true
+确定受到保持纵横比影响的握柄，仅当aspectRatio为true是生效。
 
 
 ```html
@@ -267,6 +267,10 @@ Define the initial height of the component.
 定义组件的初始高度。
 
 
+```html
+<vue-drag-resize-rotate :h="200">
+```
+
 #### deg
 Type: `Number`<br>
 Required: `false`<br>
@@ -276,11 +280,6 @@ Determines the rotate degree of the component
 
 ```html
 <vue-drag-resize-rotate :deg="120">
-```
-
-
-```html
-<vue-drag-resize-rotate :h="200">
 ```
 
 #### minw
@@ -590,7 +589,7 @@ Called whenever the component stops getting dragged.
 #### rotating
 
 Required: `false`<br>
-Parameters: `-`
+Parameters: `Number`
 
 Called whenever the rotate handler gets clicked and the cursor moving.
 单击旋转握柄且旋转时调用。
@@ -602,7 +601,7 @@ Called whenever the rotate handler gets clicked and the cursor moving.
 #### rotatestop
 
 Required: `false`<br>
-Parameters: `-`
+Parameters: `Number`
 
 Called whenever the component stops getting resized.
 当组件停止旋转时调用。
