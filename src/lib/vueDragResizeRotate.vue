@@ -965,17 +965,6 @@ span.rotate {
   right: -30px;
   color: #000000;
 }
-span.rotate:hover {
-  color: #28f0ff;
-}
-.vdr.active:before {
-  content: '';
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  box-sizing: content-box;
-  outline: 6px solid transparent;
-}
 .vdr-stick {
   box-sizing: border-box;
   position: absolute;

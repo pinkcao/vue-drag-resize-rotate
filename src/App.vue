@@ -19,8 +19,8 @@
       :isResizable="item.resizable"
       :isRotatable="item.rotatable"
       :snapToGrid="item.snapToGrid"
-      :gridX="10"
-      :gridY="50"
+      :gridX="item.gridX"
+      :gridY="item.gridY"
       :aspectRatio="item.aspectRatio"
       :aspectRatioSticks="item.aspectRatioSticks"
       @activated="activated(item.index)"
@@ -29,6 +29,8 @@
       <div :style="item.squareStyle">
         active: {{item.active}}<br>
         snapToGrid: {{item.snapToGrid}}<br>
+        gridX: {{item.gridX}}<br>
+        gridY: {{item.gridY}}<br>
         rotatable: {{item.rotatable}}<br>
         aspectRatio: {{item.aspectRatio}}<br>
         aspectRatioSticks: {{item.aspectRatioSticks}}
