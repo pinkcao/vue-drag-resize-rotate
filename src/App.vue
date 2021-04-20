@@ -92,7 +92,7 @@ export default {
           resizable: true,
           rotatable: true,
           index: 1,
-          zindex: 0,
+          zindex: 1,
           mode: 'design',
           flag: false,
           snapToGrid: true,
@@ -122,7 +122,7 @@ export default {
           resizable: true,
           rotatable: false,
           index: 2,
-          zindex: 0,
+          zindex: 2,
           mode: 'design',
           flag: false,
           snapToGrid: true,
@@ -154,15 +154,13 @@ export default {
       this.squares[index].height = newRect.height
       this.squares[index].top = newRect.top
       this.squares[index].left = newRect.left
-      console.log(index)
-      console.log(newRect)
     },
     rotate(deg, index) {
       this.squares[index].deg = deg
     },
     activated(index) {
       for (let i = 0; i < this.squares.length; i++) {
-        console.log(this.squares[i].index != index)
+        // console.log(this.squares[i].index != index)
         if (this.squares[i].index != index) {
           this.squares[i].active = false
         }

@@ -45,11 +45,8 @@ const styleMapping = {
 }
 export default {
   name: 'vue-drag-resize-rotate',
+  emits: ['rotating','rotatestop','resizing','resizestop','dragging','dragstop','clicked','activated','deactivated'],
   props: {
-    border: {},
-    bgColor: {
-      default: '#000'
-    },
     deg: {
       type: Number,
       default: 0
@@ -227,7 +224,8 @@ export default {
       minHeight: this.minh,
       currentFixArray: [],
       currentFixSpot: [],
-      ratioStick: null
+      ratioStick: null,
+      finalFixArray: []
     }
   },
   created: function() {
@@ -491,8 +489,13 @@ export default {
         return
       }
       this.stickDrag = true
-      this.currentFixSpot = [this.$refs.bl[0].getBoundingClientRect().x, this.$refs.bl[0].getBoundingClientRect().y]
-      this.currentFixArray = [this.$refs.bl[0].getBoundingClientRect().x, this.$refs.bl[0].getBoundingClientRect().y]
+      //means now is vue3
+      if (this.$refs.bl[0] === undefined) {
+        this.currentFixArray = [this.$refs.bl.getBoundingClientRect().x, this.$refs.bl.getBoundingClientRect().y]
+        } else {
+          // means now is vue2
+        this.currentFixArray = [this.$refs.bl[0].getBoundingClientRect().x, this.$refs.bl[0].getBoundingClientRect().y]
+      }
       switch (stick) {
         case 'tl':
           this.$refs.current.style.transformOrigin = 'bottom right'
@@ -520,11 +523,15 @@ export default {
           break
       }
       // eslint-disable-next-line prettier/prettier
-      let testArr = [this.currentFixArray[0] - this.$refs.bl[0].getBoundingClientRect().x, this.currentFixArray[1] - this.$refs.bl[0].getBoundingClientRect().y]
-      this.left = this.left + testArr[0] / this.parentScaleX
-      this.right = this.right - testArr[0] / this.parentScaleX
-      this.top = this.top + testArr[1] / this.parentScaleY
-      this.bottom = this.bottom - testArr[1] / this.parentScaleY
+      if (this.$refs.bl[0] === undefined) {
+        this.finalFixArray = [this.currentFixArray[0] - this.$refs.bl.getBoundingClientRect().x, this.currentFixArray[1] - this.$refs.bl.getBoundingClientRect().y]
+      } else {
+        this.finalFixArray = [this.currentFixArray[0] - this.$refs.bl[0].getBoundingClientRect().x, this.currentFixArray[1] - this.$refs.bl[0].getBoundingClientRect().y]
+      }
+      this.left = this.left + this.finalFixArray[0] / this.parentScaleX
+      this.right = this.right - this.finalFixArray[0] / this.parentScaleX
+      this.top = this.top + this.finalFixArray[1] / this.parentScaleY
+      this.bottom = this.bottom - this.finalFixArray[1] / this.parentScaleY
       this.stickStartPos.mouseX = ev.pageX || ev.touches[0].pageX
       this.stickStartPos.mouseY = ev.pageY || ev.touches[0].pageY
       this.stickStartPos.left = this.left
@@ -662,13 +669,19 @@ export default {
         minBottom: null,
         maxBottom: null
       }
-      this.currentFixArray = [this.$refs.bl[0].getBoundingClientRect().x, this.$refs.bl[0].getBoundingClientRect().y]
-      this.$refs.current.style.transformOrigin = 'center center'
-      let testArr = [this.currentFixArray[0] - this.$refs.bl[0].getBoundingClientRect().x, this.currentFixArray[1] - this.$refs.bl[0].getBoundingClientRect().y]
-      this.left = this.left + testArr[0] / this.parentScaleX
-      this.right = this.right - testArr[0] / this.parentScaleX
-      this.top = this.top + testArr[1] / this.parentScaleY
-      this.bottom = this.bottom - testArr[1] / this.parentScaleY
+      if (this.$refs.bl[0] === undefined) {
+        this.currentFixArray = [this.$refs.bl.getBoundingClientRect().x, this.$refs.bl.getBoundingClientRect().y]
+        this.$refs.current.style.transformOrigin = 'center center'
+        this.finalFixArray = [this.currentFixArray[0] - this.$refs.bl.getBoundingClientRect().x, this.currentFixArray[1] - this.$refs.bl.getBoundingClientRect().y]
+      } else {
+        this.currentFixArray = [this.$refs.bl[0].getBoundingClientRect().x, this.$refs.bl[0].getBoundingClientRect().y]
+        this.$refs.current.style.transformOrigin = 'center center'
+        this.finalFixArray = [this.currentFixArray[0] - this.$refs.bl[0].getBoundingClientRect().x, this.currentFixArray[1] - this.$refs.bl[0].getBoundingClientRect().y]
+      }
+      this.left = this.left + this.finalFixArray[0] / this.parentScaleX
+      this.right = this.right - this.finalFixArray[0] / this.parentScaleX
+      this.top = this.top + this.finalFixArray[1] / this.parentScaleY
+      this.bottom = this.bottom - this.finalFixArray[1] / this.parentScaleY
       // this.rawTop = this.top
       // this.rawBottom = this.bottom
       // this.rawLeft = this.left
@@ -769,7 +782,7 @@ export default {
         return true
       }
       return false
-    }
+    },
   },
   watch: {
     rawLeft(newLeft) {
