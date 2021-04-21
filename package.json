@@ -1,11 +1,16 @@
 {
   "name": "@pinkcao/vue-drag-resize-rotate",
   "description": "A Vue component, a customizable container of other components",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "pinkcao <972558143@qq.com>",
   "license": "MIT",
   "private": false,
   "main": "dist/vue-drag-resize-rotate.js",
+  "repository" :  
+  { 
+    "type" : "git"  ,
+    "url" : "https://github.com/pinkcao/vue-drag-resize-rotate.git"  
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"

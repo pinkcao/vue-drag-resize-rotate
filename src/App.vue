@@ -160,7 +160,7 @@ export default {
     },
     activated(index) {
       for (let i = 0; i < this.squares.length; i++) {
-        // console.log(this.squares[i].index != index)
+        console.log(this.squares[i].index != index)
         if (this.squares[i].index != index) {
           this.squares[i].active = false
         }
