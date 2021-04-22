@@ -242,7 +242,32 @@ export default {
       ro: null,
     }
   },
-  // setup() {
+  // setup(props, context) {
+  //     let rawDeg = this.deg
+  //     let rotateCenter= []
+  //     let rotateEnd= []
+  //     let rotateStart= []
+  //     let active= this.isActive
+  //     let rawWidth= this.w
+  //     let rawHeight= this.h
+  //     let rawLeft= this.x
+  //     let rawTop= this.y
+  //     let rawRight= null
+  //     let rawBottom= null
+  //     let zIndex= this.z
+  //     let aspectFactor= this.w / this.h
+  //     let parentWidth= null
+  //     let parentHeight= null
+  //     let left= this.x
+  //     let top= this.y
+  //     let right= null
+  //     let bottom= null
+  //     let minWidth= this.minw
+  //     let minHeight= this.minh
+  //     let currentFixArray= []
+  //     let currentFixSpot= []
+  //     let ratioStick= null
+  //     let finalFixArray= []
   //   //set the sticks refs
   //   let current = ref(null)
   //   let ro = ref(null)
