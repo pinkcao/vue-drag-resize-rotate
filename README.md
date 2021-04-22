@@ -8,6 +8,9 @@ based on kirillmurashov vue-drag-resize, extended "rotate"
 [Demo](https://pinkcao.github.io/vue-drag-resize-rotate/index.html)
 
 
+Under some tests, at least, the component now can be used if you just copy the file ./src/lib/vueDragResizeRotate.vue to your project.
+When the component is installed through npm, some unexpected problems will occur maybe requires weeks to fix these. 
+
 ## Install and basic usage
 
 ```bash
