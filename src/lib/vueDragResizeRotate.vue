@@ -2,7 +2,7 @@
   <div
     class="vdr"
     :style="{ ...style, transform: 'rotateZ(' + deg + 'Deg)' }"
-    ref="current"
+    :ref="defineCurrent"
     tabIndex="-1"
     @click="clickSon($event)"
     :class="active || isActive ? 'active' : 'inactive'"
@@ -18,29 +18,40 @@
       @mousedown.stop.prevent="stickDown(stick, $event)"
       @touchstart.stop.prevent="stickDown(stick, $event)"
       :style="vdrStick(stick)"
-      :ref="stick"
     ></div>
-    <span
+    <div
+      class="vdr-stick"
+      :class="['vdr-stick-' + 'ro', isRotatable ? '' : 'not-rotatable']"
+      @mousedown.stop.prevent="rotateDown($event)"
+      @touchstart.stop.prevent="rotateDown($event)"
+      :style="vdrStick('ro')"
+      :ref="defineRo"
+    ></div>
+    <!-- <span
       class="iconfont icon-rotate"
       :style="currentHalfWidth"
       v-show="isRotatable && active"
       @mousedown.stop.prevent="rotateDown($event)"
       @touchstart.stop.prevent="rotateDown($event)"
-    ></span>
+    ></span> -->
   </div>
 </template>
 <script>
+import {ref, onMounted} from 'vue'
+
 const stickSize = 8
 const styleMapping = {
   y: {
     t: 'top',
     m: 'marginTop',
-    b: 'bottom'
+    b: 'bottom',
+    r: 'marginTop'
   },
   x: {
     l: 'left',
     m: 'marginLeft',
-    r: 'right'
+    r: 'right',
+    o: 'marginLeft'
   }
 }
 export default {
@@ -225,10 +236,26 @@ export default {
       currentFixArray: [],
       currentFixSpot: [],
       ratioStick: null,
-      finalFixArray: []
+      finalFixArray: [],
+
+      current: null,
+      ro: null,
     }
   },
-  created: function() {
+  // setup() {
+  //   //set the sticks refs
+  //   let current = ref(null)
+  //   let ro = ref(null)
+  //   onMounted(() => {
+  //     console.log(current)
+  //     console.log(current.value)
+  //   })
+  //   return {
+  //     current, 
+  //     ro
+  //   }
+  // },
+  created: function() { 
     this.stickDrag = false
     this.bodyDrag = false
     this.rotateDrag = false
@@ -247,7 +274,7 @@ export default {
     this.currentStick = []
   },
   mounted: function() {
-    this.cacuFather()
+    this.calcuFather()
     document.documentElement.addEventListener('mousemove', this.move)
     document.documentElement.addEventListener('mouseup', this.up)
     document.documentElement.addEventListener('mouseleave', this.up)
@@ -269,7 +296,7 @@ export default {
       }
     }
   },
-  beforeDestroy: function() {
+  beforeUnmount: function() {
     document.documentElement.removeEventListener('mousemove', this.move)
     document.documentElement.removeEventListener('mouseup', this.up)
     document.documentElement.removeEventListener('mouseleave', this.up)
@@ -285,18 +312,29 @@ export default {
         method.call(context, params)
       }, 300)
     },
+    defineCurrent(el) {
+      if (el) {
+        this.current = el
+      }
+    },
+    defineRo(el) {
+      if (el) {
+        this.ro = el
+      }
+    },
     getCenter() {
-      var el = this.$refs.current
+      let el = this.current
       this.rotateCenter = [
         el.getBoundingClientRect().left + el.getBoundingClientRect().width / 2,
         el.getBoundingClientRect().top + el.getBoundingClientRect().height / 2
       ]
+      console.log(this.rotateCenter)
     },
     clickSon(e) {
       e.target.focus()
       e.stopPropagation()
     },
-    cacuFather() {
+    calcuFather() {
       this.parentElement = this.$el.parentNode
       this.parentWidth = this.parentW ? this.parentW : this.parentElement.clientWidth
       this.parentHeight = this.parentH ? this.parentH : this.parentElement.clientHeight
@@ -460,7 +498,7 @@ export default {
       this.rotateStart = [ev.clientX || ev.touches[0].pageX, ev.clientY || ev.touches[0].pageY]
     },
     rotateMove(event){
-        var el = this.$refs.current
+        var el = this.current
         let a = this.calculLength(this.rotateStart[0], event.clientX || event.touches[0].pageX, this.rotateStart[1], event.clientY || event.touches[0].pageY)
         let c = this.calculLength(this.rotateStart[0], this.rotateCenter[0], this.rotateStart[1], this.rotateCenter[1])
         let b = this.calculLength(this.rotateCenter[0], event.clientX || event.touches[0].pageX, this.rotateCenter[1], event.clientY || event.touches[0].pageY)
@@ -489,44 +527,38 @@ export default {
         return
       }
       this.stickDrag = true
-      //means now is vue3
-      if (this.$refs.bl[0] === undefined) {
-        this.currentFixArray = [this.$refs.bl.getBoundingClientRect().x, this.$refs.bl.getBoundingClientRect().y]
-        } else {
-          // means now is vue2
-        this.currentFixArray = [this.$refs.bl[0].getBoundingClientRect().x, this.$refs.bl[0].getBoundingClientRect().y]
-      }
+      this.currentFixArray = [this.ro.getBoundingClientRect().x, this.ro.getBoundingClientRect().y]
       switch (stick) {
         case 'tl':
-          this.$refs.current.style.transformOrigin = 'bottom right'
+          this.current.style.transformOrigin = 'bottom right'
           break
         case 'tm':
-          this.$refs.current.style.transformOrigin = 'bottom center'
+          this.current.style.transformOrigin = 'bottom center'
           break
         case 'tr':
-          this.$refs.current.style.transformOrigin = 'bottom left'
+          this.current.style.transformOrigin = 'bottom left'
           break
         case 'mr':
-          this.$refs.current.style.transformOrigin = 'left center'
+          this.current.style.transformOrigin = 'left center'
           break
         case 'br':
-          this.$refs.current.style.transformOrigin = 'top left'
+          this.current.style.transformOrigin = 'top left'
           break
         case 'bm':
-          this.$refs.current.style.transformOrigin = 'top center'
+          this.current.style.transformOrigin = 'top center'
           break
         case 'bl':
-          this.$refs.current.style.transformOrigin = 'top right'
+          this.current.style.transformOrigin = 'top right'
           break
         case 'ml':
-          this.$refs.current.style.transformOrigin = 'right center'
+          this.current.style.transformOrigin = 'right center'
           break
       }
       // eslint-disable-next-line prettier/prettier
-      if (this.$refs.bl[0] === undefined) {
-        this.finalFixArray = [this.currentFixArray[0] - this.$refs.bl.getBoundingClientRect().x, this.currentFixArray[1] - this.$refs.bl.getBoundingClientRect().y]
+      if (this.ro[0] === undefined) {
+        this.finalFixArray = [this.currentFixArray[0] - this.ro.getBoundingClientRect().x, this.currentFixArray[1] - this.ro.getBoundingClientRect().y]
       } else {
-        this.finalFixArray = [this.currentFixArray[0] - this.$refs.bl[0].getBoundingClientRect().x, this.currentFixArray[1] - this.$refs.bl[0].getBoundingClientRect().y]
+        this.finalFixArray = [this.currentFixArray[0] - this.ro[0].getBoundingClientRect().x, this.currentFixArray[1] - this.ro[0].getBoundingClientRect().y]
       }
       this.left = this.left + this.finalFixArray[0] / this.parentScaleX
       this.right = this.right - this.finalFixArray[0] / this.parentScaleX
@@ -669,14 +701,14 @@ export default {
         minBottom: null,
         maxBottom: null
       }
-      if (this.$refs.bl[0] === undefined) {
-        this.currentFixArray = [this.$refs.bl.getBoundingClientRect().x, this.$refs.bl.getBoundingClientRect().y]
-        this.$refs.current.style.transformOrigin = 'center center'
-        this.finalFixArray = [this.currentFixArray[0] - this.$refs.bl.getBoundingClientRect().x, this.currentFixArray[1] - this.$refs.bl.getBoundingClientRect().y]
+      if (this.ro[0] === undefined) {
+        this.currentFixArray = [this.ro.getBoundingClientRect().x, this.ro.getBoundingClientRect().y]
+        this.current.style.transformOrigin = 'center center'
+        this.finalFixArray = [this.currentFixArray[0] - this.ro.getBoundingClientRect().x, this.currentFixArray[1] - this.ro.getBoundingClientRect().y]
       } else {
-        this.currentFixArray = [this.$refs.bl[0].getBoundingClientRect().x, this.$refs.bl[0].getBoundingClientRect().y]
-        this.$refs.current.style.transformOrigin = 'center center'
-        this.finalFixArray = [this.currentFixArray[0] - this.$refs.bl[0].getBoundingClientRect().x, this.currentFixArray[1] - this.$refs.bl[0].getBoundingClientRect().y]
+        this.currentFixArray = [this.ro[0].getBoundingClientRect().x, this.ro[0].getBoundingClientRect().y]
+        this.current.style.transformOrigin = 'center center'
+        this.finalFixArray = [this.currentFixArray[0] - this.ro[0].getBoundingClientRect().x, this.currentFixArray[1] - this.ro[0].getBoundingClientRect().y]
       }
       this.left = this.left + this.finalFixArray[0] / this.parentScaleX
       this.right = this.right - this.finalFixArray[0] / this.parentScaleX
@@ -758,8 +790,11 @@ export default {
           width: `${stickSize / this.parentScaleX}px`,
           height: `${stickSize / this.parentScaleY}px`
         }
-        stickStyle[styleMapping.y[stick[0]]] = `${stickSize / this.parentScaleX / -2}px`
-        stickStyle[styleMapping.x[stick[1]]] = `${stickSize / this.parentScaleX / -2}px`
+        // if (stick != 'ro') {
+          stickStyle[styleMapping.y[stick[0]]] = `${stickSize / this.parentScaleX / -2}px`
+          stickStyle[styleMapping.x[stick[1]]] = `${stickSize / this.parentScaleX / -2}px`
+        // }
+        // console.log(stickStyle)
         return stickStyle
       }
     },
@@ -1007,7 +1042,15 @@ span.rotate {
   top: 50%;
   cursor: ew-resize;
 }
+.vdr-stick-ro {
+  left: 50%;
+  top: -20px;
+  cursor: pointer
+}
 .vdr-stick.not-resizable {
+  display: none;
+}
+.vdr-stick.not-rotatable {
   display: none;
 }
 .vdr.active:before {
