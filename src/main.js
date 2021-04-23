@@ -1,8 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import vueDragResizeRotate from './lib/vueDragResizeRotate.vue';
-import './assets/iconfont/iconfont.css'
+import router from './router'
+import store from './store'
+import vueDragResizeRotate from '../packages/index'
 
-const app = createApp(App)
-app.use(vueDragResizeRotate)
-app.mount('#app')
+createApp(App).use(store).use(router).use(vueDragResizeRotate).mount('#app')
