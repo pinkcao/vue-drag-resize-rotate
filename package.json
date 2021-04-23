@@ -1,7 +1,9 @@
 {
   "name": "vue-drag-resize-rotate",
-  "version": "1.2.1",
-  "private": false,
+  "description": "A Vue component, a customizable container of other components",
+  "version": "1.1.1",
+  "author": "pinkcao <972558143@qq.com>",
+  "license": "MIT",
   "main": "lib/cats-ui-demo.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
