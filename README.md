@@ -8,23 +8,23 @@ based on kirillmurashov vue-drag-resize, extended "rotate"
 [Demo](https://pinkcao.github.io/vue-drag-resize-rotate/index.html)
 
 # Version
-1.1.x means the component is for vue2.0
-1.2.0+ means the component is for vue3.0
+1.1.x means the component is for vue2.0, in master branch<br>
+1.2.0+ means the component is for vue3.0, in vue3.0 branch
 
 ## Install and basic usage
 
-vue2.0
+### vue2.0
 ```bash
 $ npm install @pinkcao/vue-drag-resize-rotate@1.1.1
 ```
-vue3.0
+### vue3.0
 ```bash
 $ npm install @pinkcao/vue-drag-resize-rotate@1.2.2
 ```
 
-Register the component:
+### Register the component:
 
-## for vue2.0
+### for vue2.0
 ```js
 import Vue from 'vue'
 import vueDragResizeRotate from '@pinkcao/vue-drag-resize-rotate'
@@ -32,7 +32,7 @@ import vueDragResizeRotate from '@pinkcao/vue-drag-resize-rotate'
 Vue.use(vueDragResizeRotate)
 ```
 
-## for vue3.0
+### for vue3.0
 ```js
 import { createApp } from 'vue'
 import vueDragResizeRotate from "@pinkcao/vue-drag-resize-rotate";
@@ -42,7 +42,7 @@ const app = createApp(App);
 app.use(vueDragResizeRotate).use(vueDragResizeRotateCSS).mount("app");
 ```
 
-Use the component:
+### Use the component:
 
 ```vue
 <template>
