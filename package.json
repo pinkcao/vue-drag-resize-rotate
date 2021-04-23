@@ -4,7 +4,13 @@
   "version": "1.1.1",
   "author": "pinkcao <972558143@qq.com>",
   "license": "MIT",
+  "private": false,
   "main": "lib/cats-ui-demo.umd.min.js",
+  "repository" :  
+  { 
+    "type" : "git"  ,
+    "url" : "https://github.com/pinkcao/vue-drag-resize-rotate.git"  
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
