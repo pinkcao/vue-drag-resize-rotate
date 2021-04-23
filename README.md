@@ -8,8 +8,8 @@ based on kirillmurashov vue-drag-resize, extended "rotate"
 [Demo](https://pinkcao.github.io/vue-drag-resize-rotate/index.html)
 
 # Version
-1.1.x means the component is for vue2.0<br>
-1.2.0+ means the component is for vue3.0
+1.1.x means the component is for vue2.0, in master branch<br>
+1.2.0+ means the component is for vue3.0, in vue3.0 branch
 
 ## Install and basic usage
 
