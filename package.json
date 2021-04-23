@@ -5,7 +5,7 @@
   "author": "pinkcao <972558143@qq.com>",
   "license": "MIT",
   "private": false,
-  "main": "lib/cats-ui-demo.umd.min.js",
+  "main": "lib/vue-drag-resize.umd.min.js",
   "repository" :  
   { 
     "type" : "git"  ,
