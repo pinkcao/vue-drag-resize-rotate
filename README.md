@@ -7,18 +7,24 @@ based on kirillmurashov vue-drag-resize, extended "rotate"
 ## Demo
 [Demo](https://pinkcao.github.io/vue-drag-resize-rotate/index.html)
 
-
-After some tests, at least, the component now can be used if you just copy the file ./src/lib/vueDragResizeRotate.vue to your project.
-When the component is installed through npm, some unexpected problems will occur maybe requires weeks to fix these. 
+# Version
+1.1.x means the component is for vue2.0
+1.2.0+ means the component is for vue3.0
 
 ## Install and basic usage
 
+vue2.0
 ```bash
-$ npm install @pinkcao/vue-drag-resize-rotate
+$ npm install @pinkcao/vue-drag-resize-rotate@1.1.1
+```
+vue3.0
+```bash
+$ npm install @pinkcao/vue-drag-resize-rotate@1.2.2
 ```
 
 Register the component:
 
+## for vue2.0
 ```js
 import Vue from 'vue'
 import vueDragResizeRotate from '@pinkcao/vue-drag-resize-rotate'
@@ -26,12 +32,31 @@ import vueDragResizeRotate from '@pinkcao/vue-drag-resize-rotate'
 Vue.use(vueDragResizeRotate)
 ```
 
+## for vue3.0
+```js
+import { createApp } from 'vue'
+import vueDragResizeRotate from "@pinkcao/vue-drag-resize-rotate";
+import vueDragResizeRotateCSS from "@pinkcao/vue-drag-resize-rotate/lib/vue-drag-resize-rotate.css";
+
+const app = createApp(App);
+app.use(vueDragResizeRotate).use(vueDragResizeRotateCSS).mount("app");
+```
+
 Use the component:
 
 ```vue
 <template>
     <div id="app">
-        <vue-drag-resize-rotate :isActive="true" :w="200" :h="200" :deg="deg" :isRotatable="rotatable" v-on:resizing="resize" v-on:dragging="resize" v-on:rotating="rotate">
+        <vue-drag-resize-rotate 
+        :isActive="true" 
+        :w="200" 
+        :h="200" 
+        :deg="deg" 
+        :isRotatable="rotatable" 
+        @resizing="resize" 
+        @dragging="resize" 
+        @rotating="rotate"
+        >
             <h3>Hello World!</h3>
             <p>{{ top }} х {{ left }} </p>
             <p>{{ width }} х {{ height }}</p>
