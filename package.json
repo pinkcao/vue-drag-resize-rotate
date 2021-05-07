@@ -1,7 +1,7 @@
 {
   "name": "@pinkcao/vue-drag-resize-rotate",
   "description": "A Vue component, a customizable container of other components",
-  "version": "1.1.1",
+  "version": "1.2.3",
   "author": "pinkcao <972558143@qq.com>",
   "license": "MIT",
   "private": false,
