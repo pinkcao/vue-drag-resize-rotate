@@ -8,18 +8,18 @@ based on kirillmurashov vue-drag-resize, extended "rotate"
 [Demo](https://pinkcao.github.io/vue-drag-resize-rotate/index.html)
 
 # Version
-1.1.x means the component is for vue2.0, in master branch<br>
-1.2.0+ means the component is for vue3.0, in vue3.0 branch
+1.0.0 means the component is for vue2.0, in master branch<br>
+2.0.0+ means the component is for vue3.0, in vue3.0 branch
 
 ## Install and basic usage
 
 ### vue2.0
 ```bash
-$ npm install @pinkcao/vue-drag-resize-rotate@1.1.1
+$ npm install @pinkcao/vue-drag-resize-rotate
 ```
 ### vue3.0
 ```bash
-$ npm install @pinkcao/vue-drag-resize-rotate@1.2.2
+$ npm install @pinkcao/vue-drag-resize-rotate@next
 ```
 
 ### Register the component:
