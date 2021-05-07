@@ -27,13 +27,6 @@
       :style="vdrStick('ro')"
       :ref="defineRo"
     ></div>
-    <!-- <span
-      class="iconfont icon-rotate"
-      :style="currentHalfWidth"
-      v-show="isRotatable && active"
-      @mousedown.stop.prevent="rotateDown($event)"
-      @touchstart.stop.prevent="rotateDown($event)"
-    ></span> -->
   </div>
 </template>
 <script>
