@@ -4,7 +4,6 @@
     :style="{ ...style, transform: 'rotateZ(' + deg + 'Deg)' }"
     ref="current"
     tabIndex="-1"
-    @click="clickSon($event)"
     :class="active || isActive ? 'active' : 'inactive'"
     @mousedown.stop.prevent="bodyDown($event)"
     @touchstart.stop.prevent="bodyDown($event)"
@@ -291,10 +290,6 @@ export default {
         el.getBoundingClientRect().left + el.getBoundingClientRect().width / 2,
         el.getBoundingClientRect().top + el.getBoundingClientRect().height / 2
       ]
-    },
-    clickSon(e) {
-      e.target.focus()
-      e.stopPropagation()
     },
     cacuFather() {
       this.parentElement = this.$el.parentNode
