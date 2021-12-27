@@ -29,10 +29,13 @@
       <div :style="item.squareStyle">
         active: {{item.active}}<br>
         snapToGrid: {{item.snapToGrid}}<br>
+        height: {{item.height}}<br>
+        width: {{item.width}}<br>
         gridX: {{item.gridX}}<br>
         gridY: {{item.gridY}}<br>
         rotatable: {{item.rotatable}}<br>
         aspectRatio: {{item.aspectRatio}}<br>
+        parentLimitation: {{item.parentLimitation}}<br>
         aspectRatioSticks: {{item.aspectRatioSticks}}
       </div>
     </vue-drag-resize-rotate>

@@ -212,7 +212,6 @@ export default {
       rawRight: null,
       rawBottom: null,
       zIndex: this.z,
-      aspectFactor: this.w / this.h,
       parentWidth: null,
       parentHeight: null,
       left: this.x,
@@ -677,10 +676,6 @@ export default {
       this.right = this.right - this.finalFixArray[0] / this.parentScaleX
       this.top = this.top + this.finalFixArray[1] / this.parentScaleY
       this.bottom = this.bottom - this.finalFixArray[1] / this.parentScaleY
-      // this.rawTop = this.top
-      // this.rawBottom = this.bottom
-      // this.rawLeft = this.left
-      // this.rawRight = this.right
       this.stickAxis = null
       this.$emit('resizing', this.rect)
       this.$emit('resizestop', this.rect)
@@ -778,12 +773,13 @@ export default {
       }
       return false
     },
+    aspectFactor(){
+      return this.w / this.h
+    } 
+
   },
   watch: {
     rawLeft(newLeft) {
-      if (this.aspectRatioStickFlag == false) {
-        this.aspectFactor = this.width / this.height
-      }
       const limits = this.limits
       const stickAxis = this.stickAxis
       const aspectFactor = this.aspectFactor
@@ -824,9 +820,6 @@ export default {
       this.right = newRight
     },
     rawTop(newTop) {
-      if (this.aspectRatioStickFlag == false) {
-        this.aspectFactor = this.width / this.height
-      }
       const limits = this.limits
       const stickAxis = this.stickAxis
       const aspectFactor = this.aspectFactor
@@ -885,11 +878,6 @@ export default {
     z(val) {
       if (val >= 0 || val === 'auto') {
         this.zIndex = val
-      }
-    },
-    aspectRatio(val) {
-      if (val) {
-        this.aspectFactor = this.width / this.height
       }
     },
     minw(val) {
